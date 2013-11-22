@@ -57,7 +57,7 @@ fi
 
 if [ -z "$SYNC_PROTO" ]
 then
-  SYNC_PROTO=http
+  SYNC_PROTO=git
 fi
 
 export PYTHONDONTWRITEBYTECODE=1
