@@ -141,9 +141,7 @@ fi
 mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
 
-rm -rf $WORKSPACE/build_env
-git clone https://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env -b master
-check_result "Bootstrap failed"
+
 
 if [ -f $WORKSPACE/build_env/bootstrap.sh ]
 then
