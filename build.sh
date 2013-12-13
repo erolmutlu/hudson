@@ -57,7 +57,7 @@ fi
 
 if [ -z "$SYNC_PROTO" ]
 then
-  SYNC_PROTO=http
+  SYNC_PROTO=git
 fi
 
 export PYTHONDONTWRITEBYTECODE=1
@@ -87,7 +87,7 @@ REPO=$(which repo)
 if [ -z "$REPO" ]
 then
   mkdir -p ~/bin
-  curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
+  curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
   chmod a+x ~/bin/repo
 fi
 
@@ -142,7 +142,7 @@ mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
 
 rm -rf $WORKSPACE/build_env
-git clone https://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env -b master
+git clone https://github.com/erolmutlu/cm_build_config.git $WORKSPACE/build_env -b master
 check_result "Bootstrap failed"
 
 if [ -f $WORKSPACE/build_env/bootstrap.sh ]
