@@ -57,7 +57,7 @@ fi
 
 if [ -z "$SYNC_PROTO" ]
 then
-  SYNC_PROTO=git
+  SYNC_PROTO=http
 fi
 
 export PYTHONDONTWRITEBYTECODE=1
@@ -87,7 +87,7 @@ REPO=$(which repo)
 if [ -z "$REPO" ]
 then
   mkdir -p ~/bin
-  curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+  curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
   chmod a+x ~/bin/repo
 fi
 
@@ -142,7 +142,7 @@ mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
 
 rm -rf $WORKSPACE/build_env
-git clone https://github.com/erolmutlu/cm_build_config.git $WORKSPACE/build_env -b master
+git clone https://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env -b master
 check_result "Bootstrap failed"
 
 if [ -f $WORKSPACE/build_env/bootstrap.sh ]
@@ -300,7 +300,7 @@ fi
 TIME_SINCE_LAST_CLEAN=$(expr $(date +%s) - $LAST_CLEAN)
 # convert this to hours
 TIME_SINCE_LAST_CLEAN=$(expr $TIME_SINCE_LAST_CLEAN / 60 / 60)
-if [ $TIME_SINCE_LAST_CLEAN -gt "24" -o $CLEAN = "true" ]
+if [ $TIME_SINCE_LAST_CLEAN -gt "6" -o $CLEAN = "true" ]
 then
   echo "Cleaning!"
   touch .clean
@@ -324,6 +324,10 @@ then
         OTASCRIPT=$(cat $OUT/ota_script_path)
     else
         OTASCRIPT=./build/tools/releasetools/ota_from_target_files
+    fi
+    if [ -z "$WITH_GMS" -o "$WITH_GMS" = "false" ]
+    then
+        OTASCRIPT="$OTASCRIPT --backup=true"
     fi
     ./build/tools/releasetools/sign_target_files_apks -e Term.apk= -d vendor/cm-priv/keys $OUT/obj/PACKAGING/target_files_intermediates/$TARGET_PRODUCT-target_files-$BUILD_NUMBER.zip $OUT/$MODVERSION-signed-intermediate.zip
     $OTASCRIPT -k vendor/cm-priv/keys/releasekey $OUT/$MODVERSION-signed-intermediate.zip $WORKSPACE/archive/cm-$MODVERSION-signed.zip
