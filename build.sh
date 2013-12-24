@@ -288,7 +288,7 @@ then
   if [ $CHANGE_COUNT -eq "0" ]
   then
     echo "Zero changes since last build, aborting"
-    exit 1
+#    exit 1
   fi
 fi
 
@@ -300,7 +300,7 @@ fi
 TIME_SINCE_LAST_CLEAN=$(expr $(date +%s) - $LAST_CLEAN)
 # convert this to hours
 TIME_SINCE_LAST_CLEAN=$(expr $TIME_SINCE_LAST_CLEAN / 60 / 60)
-if [ $TIME_SINCE_LAST_CLEAN -gt "6" -o $CLEAN = "true" ]
+if [ $TIME_SINCE_LAST_CLEAN -gt "1" -o $CLEAN = "true" ]
 then
   echo "Cleaning!"
   touch .clean
@@ -388,11 +388,11 @@ rmdir $TEMPSTASH
 chmod -R ugo+r $WORKSPACE/archive
 
 # Add build to GetCM
-if [ "$JOB_NAME" = "android" -a "$USER" = "jenkins" ] || [ "$PUBLISH_GETCM" = "true" ]; then
-    echo "Adding build to GetCM"
-    echo python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
-    python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
-fi
+#if [ "$JOB_NAME" = "android" -a "$USER" = "jenkins" ] || [ "$PUBLISH_GETCM" = "true" ]; then
+#    echo "Adding build to GetCM"
+#    echo python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
+#    python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
+#fi
 
 CMCP=$(which cmcp)
 if [ ! -z "$CMCP" -a ! -z "$CM_RELEASE" ]
